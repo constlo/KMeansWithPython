@@ -13,4 +13,5 @@ Tietoliikenteen sovellusprojektin 2022 repositorio.
 Sources:
 
 (1)<sub>https://commons.wikimedia.org/wiki/File:Sql_data_base_with_logo.png</sub> alaa kaddour, CC BY-SA 4.0
+
 (2)<sub>https://commons.wikimedia.org/wiki/File:Arduino_Uno_board.jpg</sub> JrawX, CC0, via Wikimedia Commons
