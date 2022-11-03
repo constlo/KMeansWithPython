@@ -4,6 +4,7 @@ TVT21SPL, Oulun Ammattikorkeakoulu
 
 Tietoliikenteen sovellusprojektin 2022 repositorio.
 
+<a title="flowchart" href="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/systemflowchart.drawio.png"></a>
 <a title="alaa kaddour, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Sql_data_base_with_logo.png"><img width="512" alt="Sql data base with logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Sql_data_base_with_logo.png/512px-Sql_data_base_with_logo.png">
 </a><sub> (1)</sub>
 
