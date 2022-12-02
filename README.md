@@ -11,6 +11,8 @@ Tietoliikenteen sovellusprojektin 2022 repositorio.
 
 <a title="JrawX, CC0, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Arduino_Uno_board.jpg"><img width="512" alt="Arduino Uno board" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Arduino_Uno_board.jpg/512px-Arduino_Uno_board.jpg"></a><sub> (2)</sub>
 
+<a title="putty.log-tiedosto" href="">
+
 
 Sources:
 
