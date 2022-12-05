@@ -81,11 +81,6 @@ for iterations in range(0, 10):
     
     smallestIndex = 0
     for piste in twoDarray:
-        #print(" ")
-        #print(" ")
-        #print("Tarkasteltava piste: {}".format(piste))
-        #print("Verrataan pisteisiin \n{}".format(keskipisteet))
-        #print(" ")
         pienin = 1000.0
         for i in range(0, 4):
             Distances[i] = np.linalg.norm([keskipisteet[i], piste])
