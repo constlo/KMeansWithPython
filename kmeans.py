@@ -56,10 +56,10 @@ Distances on myös 1 riviä 4 saraketta kokoinen numpy matriisi
 ja tähän talletetaan laskennan edetessä yksittäisen x,y,z pisteen etäisyys kaikkiin
 keskipisteet datarakenteessa oleviin 4 keskipisteeseen ja nuo 4 etäisyysarvoa talletetaan tähän muuttujaan.
 """
-centerPointCumulativeSum = np.zeros(12, dtype=int).reshape((4, 3))
 
-Distances = np.zeros(4, dtype=int)
-Counts = np.zeros(4, dtype=int)
+
+Distances = np.zeros(4, dtype=float)
+
 """
 Opetellaan laskemaan ns euklidinen etäisyys kahden 3D-pisteen välillä. 
 Käytä esim np.linalg.norm funktiota. 
@@ -76,26 +76,28 @@ ja  centerPointCumulativeSum muuttujaan summataan x,y,z komponettien arvot.
 Sisäkkäinen luuppi laskee yhden datapisteen etäisyyden kaikkiin 4 keskipisteeseen 
 ja tallentaa tuloksen distances muuttujaan.
 """
-#tallennetaan pienin löytynyt etäisyys pienin-muuttujaan.
-for iterations in range(0, 10):
-    
+dataFromLoop = np.reshape(np.zeros(1200), [100, 4, 3])
+
+for iterations in range(100):
+
+    #print("Uudet keskipisteet: {}".format(keskipisteet))
+    centerPointCumulativeSum = np.zeros(12, dtype=int).reshape((4, 3))
+    Counts = np.zeros(4, dtype=int)
     smallestIndex = 0
     for piste in twoDarray:
+        Distances = np.zeros(4, dtype=float)
+        #Valitaan sellainen etäisyys, joka on suurempi kuin kaikki mahdolliset etäisyydet. 
         pienin = 1000.0
-        for i in range(0, 4):
-            Distances[i] = np.linalg.norm([keskipisteet[i], piste])
-            #print("Pisteen {} etäisyys pisteeseen {} = {}\n".format(piste, keskipisteet[i], Distances[i]))
+        for i in range(4):
+            #Laske etäisyys
+            Distances[i] = np.linalg.norm(keskipisteet[i] - piste)
+            #Jos löytyy pienempi etäisyys kuin pienin etäisyys, sijoita muuttujaan ja tallenna millä indeksillä löytyi
             if (Distances[i] < pienin):
                 smallestIndex = i
                 pienin = Distances[i]
-                centerPointCumulativeSum[i] += keskipisteet[i]
-        #vertaile kaikkia pisteitä.
+        #Lisää kumulatiiviseen summaan pienimmän pisteen arvot, ja lisää Counts-taulukkoon yksi
+        centerPointCumulativeSum[smallestIndex] += keskipisteet[smallestIndex]
         Counts[smallestIndex] += 1
-        Distances = np.zeros(4, dtype=int)
-        #print(" ")
-    print(Counts)
-    #print(keskipisteet)
-
     """
     Seuraavaksi centerPointCumulativeSum ja count muuttujan avulla pitää laskea uudet keskipisteet. 
     Huomaa jos joku keskipiste ei saanut yhtään ”voittoa” edellisessä vaiheessa, niin tälle keskipisteelle arvotaan uusi lähtöarvo.
@@ -109,17 +111,65 @@ for iterations in range(0, 10):
     vie syntynyt koodi githubiin ja viimeistele readme dokumentin K-means algoritmikuvaus
 
     """
-    #Valitaan uudelleen ne pisteet, joihin ei tullut voittoa.
-    for i in range(0, 4):
+    #Valitaan uudelleen ne pisteet, joihin ei tullut voittoa, ja arvotaan niihin uudet arvot
+    for i in range(4):
         if(Counts[i] == 0):
+            
             for k in range(0, 3):
-                keskipisteet[i][k] = centerPointCumulativeSum[i][k]
+                keskipisteet[i][k] = np.random.randint(0, maxVals[j])
+            #print("index {} has 0 counts. New point is {}".format(i, keskipisteet[i]))
+        else:
+            keskipisteet[i] = centerPointCumulativeSum[i][:] / Counts[i]
+    dataFromLoop[iterations] = keskipisteet
+    print(Counts)
 
     
             
-#fig = plt.figure()
-#ax = fig.add_subplot(projection='3d')
-
 #ax.scatter(x_ax, y_ax, z_ax)
+#fig, axes = plt.subplots()
+p1_xpoints = dataFromLoop[:, 0, 0]
+p1_ypoints = dataFromLoop[:, 0, 1]
+p1_zpoints = dataFromLoop[:, 0, 2]
 
-#plt.show()
+p2_xpoints = dataFromLoop[:, 1, 0]
+p2_ypoints = dataFromLoop[:, 1, 1]
+p2_zpoints = dataFromLoop[:, 1, 2]
+
+p3_xpoints = dataFromLoop[:, 2, 0]
+p3_ypoints = dataFromLoop[:, 2, 1]
+p3_zpoints = dataFromLoop[:, 2, 2]
+
+p4_xpoints = dataFromLoop[:, 3, 0]
+p4_ypoints = dataFromLoop[:, 3, 1]
+p4_zpoints = dataFromLoop[:, 3, 2]
+
+
+
+figure, axis = plt.subplots(2, 2)
+  
+# For Sine Function
+axis[0, 0].plot(p1_xpoints)
+axis[0, 0].plot(p1_ypoints)
+axis[0, 0].plot(p1_zpoints)
+axis[0, 0].set_title("Keskipiste 1")
+  
+# For Cosine Function
+axis[0, 1].plot(p2_xpoints)
+axis[0, 1].plot(p2_ypoints)
+axis[0, 1].plot(p2_zpoints)
+axis[0, 1].set_title("Keskipiste 2")
+  
+# For Tangent Function
+axis[1, 0].plot(p3_xpoints)
+axis[1, 0].plot(p3_ypoints)
+axis[1, 0].plot(p3_zpoints)
+axis[1, 0].set_title("keskipiste 3")
+  
+# For Tanh Function
+axis[1, 1].plot(p4_xpoints)
+axis[1, 1].plot(p4_ypoints)
+axis[1, 1].plot(p4_zpoints)
+axis[1, 1].set_title("keskipiste 4")
+
+plt.show()
+  
