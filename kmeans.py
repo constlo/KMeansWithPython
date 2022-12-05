@@ -57,9 +57,9 @@ ja tähän talletetaan laskennan edetessä yksittäisen x,y,z pisteen etäisyys 
 keskipisteet datarakenteessa oleviin 4 keskipisteeseen ja nuo 4 etäisyysarvoa talletetaan tähän muuttujaan.
 """
 centerPointCumulativeSum = np.zeros(12, dtype=int).reshape((4, 3))
-Counts = np.zeros(4, dtype=int)
-Distances = np.zeros(4, dtype=int)
 
+Distances = np.zeros(4, dtype=int)
+Counts = np.zeros(4, dtype=int)
 """
 Opetellaan laskemaan ns euklidinen etäisyys kahden 3D-pisteen välillä. 
 Käytä esim np.linalg.norm funktiota. 
@@ -76,11 +76,55 @@ ja  centerPointCumulativeSum muuttujaan summataan x,y,z komponettien arvot.
 Sisäkkäinen luuppi laskee yhden datapisteen etäisyyden kaikkiin 4 keskipisteeseen 
 ja tallentaa tuloksen distances muuttujaan.
 """
+#tallennetaan pienin löytynyt etäisyys pienin-muuttujaan.
+for iterations in range(0, 10):
+    
+    smallestIndex = 0
+    for piste in twoDarray:
+        #print(" ")
+        #print(" ")
+        #print("Tarkasteltava piste: {}".format(piste))
+        #print("Verrataan pisteisiin \n{}".format(keskipisteet))
+        #print(" ")
+        pienin = 1000.0
+        for i in range(0, 4):
+            Distances[i] = np.linalg.norm([keskipisteet[i], piste])
+            #print("Pisteen {} etäisyys pisteeseen {} = {}\n".format(piste, keskipisteet[i], Distances[i]))
+            if (Distances[i] < pienin):
+                smallestIndex = i
+                pienin = Distances[i]
+                centerPointCumulativeSum[i] += keskipisteet[i]
+        #vertaile kaikkia pisteitä.
+        Counts[smallestIndex] += 1
+        Distances = np.zeros(4, dtype=int)
+        #print(" ")
+    print(Counts)
+    #print(keskipisteet)
 
+    """
+    Seuraavaksi centerPointCumulativeSum ja count muuttujan avulla pitää laskea uudet keskipisteet. 
+    Huomaa jos joku keskipiste ei saanut yhtään ”voittoa” edellisessä vaiheessa, niin tälle keskipisteelle arvotaan uusi lähtöarvo.
 
+    Toteuta algoritmiin vielä yksi ulompi luuppirakenne, joka tekee tämän kalvon vaiheet 1 ja 2 esim 10 kertaa.
 
-fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
+    Toteuta edellisen kohdan luuppirakenteen sisälle jonkinlainen datarakenne, johon keräät keskipisteiden arvot jokaiselta iteraatiokerralta.
 
-ax.scatter(x_ax, y_ax, z_ax)
-plt.show()
+    Visualisoi algoritmin suppeneminen kohti oikeita keskipisteitä plottaamalla tai tulostamalla edellisessä vaiheessa keräämäsi keskipisteiden arvot.
+    Testaa algoritmia. Algoritmin pitäisi aina päätyä tilanteeseen, missä kullekin keskipisteelle tulee 10 data pistettä. Kun algoritmi toimii varmasti, 
+    vie syntynyt koodi githubiin ja viimeistele readme dokumentin K-means algoritmikuvaus
+
+    """
+    #Valitaan uudelleen ne pisteet, joihin ei tullut voittoa.
+    for i in range(0, 4):
+        if(Counts[i] == 0):
+            for k in range(0, 3):
+                keskipisteet[i][k] = centerPointCumulativeSum[i][k]
+
+    
+            
+#fig = plt.figure()
+#ax = fig.add_subplot(projection='3d')
+
+#ax.scatter(x_ax, y_ax, z_ax)
+
+#plt.show()
