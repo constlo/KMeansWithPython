@@ -48,9 +48,11 @@ for i in keskipisteet:
 #Luodaan distances-taulukko etäisyyksien säilyttämistä varten.
 Distances = np.zeros(4, dtype=float)
 
-dataFromLoop = np.reshape(np.zeros(1200), [100, 4, 3])
+iterAmount = 100
 
-for iterations in range(100):
+dataFromLoop = np.reshape(np.zeros(iterAmount * 12), [iterAmount, 4, 3])
+
+for iterations in range(iterAmount):
 
     #print("Uudet keskipisteet: {}".format(keskipisteet))
     centerPointCumulativeSum = np.zeros(12, dtype=int).reshape((4, 3))
@@ -91,9 +93,10 @@ for iterations in range(100):
                 keskipisteet[i][k] = np.random.randint(0, maxVals[j])
             #print("index {} has 0 counts. New point is {}".format(i, keskipisteet[i]))
         else:
-            keskipisteet[i] = centerPointCumulativeSum[i][:] / Counts[i]
+            keskipisteet[i, :] = centerPointCumulativeSum[i][:] / Counts[i]
     dataFromLoop[iterations] = keskipisteet
-
+print(Counts)
+    
     
             
 #ax.scatter(x_ax, y_ax, z_ax)
@@ -113,7 +116,6 @@ p3_zpoints = dataFromLoop[:, 2, 2]
 p4_xpoints = dataFromLoop[:, 3, 0]
 p4_ypoints = dataFromLoop[:, 3, 1]
 p4_zpoints = dataFromLoop[:, 3, 2]
-
 
 
 figure, axis = plt.subplots(2, 2)
@@ -147,3 +149,6 @@ pisteet =pd.DataFrame.from_dict(dataFromLoop[-1])
 pd.DataFrame.to_csv(pisteet, 'finalpoints.csv')
 
 plt.show()
+
+
+#Looppi pysähtyy kun on saavutettu vain 1 count. miksi?

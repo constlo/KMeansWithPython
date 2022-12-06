@@ -82,7 +82,7 @@ ja tallentaa tuloksen distances muuttujaan.
 """
 dataFromLoop = np.reshape(np.zeros(1200), [100, 4, 3])
 
-for iterations in range(100):
+for iterations in range(20):
 
     #print("Uudet keskipisteet: {}".format(keskipisteet))
     centerPointCumulativeSum = np.zeros(12, dtype=int).reshape((4, 3))
@@ -118,27 +118,23 @@ for iterations in range(100):
     #Valitaan uudelleen ne pisteet, joihin ei tullut voittoa, ja arvotaan niihin uudet arvot
     for i in range(4):
         if(Counts[i] == 0):
+            
             for k in range(0, 3):
                 keskipisteet[i][k] = np.random.randint(0, maxVals[j])
-                #print("index {} has 0 counts. New point is {}".format(i, keskipisteet[i]))
+            #print("index {} has 0 counts. New point is {}".format(i, keskipisteet[i]))
         else:
-            keskipisteet[i, :] = centerPointCumulativeSum[i, :] / Counts[i]
+            keskipisteet[i] = centerPointCumulativeSum[i,:] / Counts[i]
     dataFromLoop[iterations] = keskipisteet
-    print(dataFromLoop[iterations] - dataFromLoop[iterations - 1])
-    #print(keskipisteet)
-    print(Counts)
-    fig = plt.figure()
-    ax = fig.add_subplot(projection='3d')      
-    ax.scatter(x_ax, y_ax, z_ax)
-    ax.scatter(keskipisteet[:, 0],keskipisteet[:, 1], keskipisteet[:, 2])
-    #print(keskipisteet)
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
-
-    plt.show()
 
 
 
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')      
+ax.scatter(x_ax, y_ax, z_ax)
+ax.scatter(keskipisteet[:, 0], keskipisteet[:, 1], keskipisteet[:, 2])
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
 
+plt.show()
   
