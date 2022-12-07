@@ -52,15 +52,6 @@ lastIndex = int(arraySize / 3)
 twoDarray = handledArray.reshape(int(handledArray.size / 3), 3)
 
 #Viikko 5, vaihe 2: Keskipisteiden arpominen
-"""
-Määritellään algoritmissa tarvittavia datarakenteita (keskipisteet):
-Keskipisteet, joita on 4 kpl ja kullakin keskipisteellä on x,y,z komponentti. 
-Tämä data voidaan siis pitää esim 4 riviä, 3 saraketta käsittävässä numpy matriisissa.
-Arvotaan nämä 4 keskipistettä numpyn random.rand() funktion avulla siten, 
-että arvottujen satunnaisten lukujen arvot ovat 0 ja suurimman x,y,z arvon välillä. 
-Eli satunnaiset arvot skaalataan input datan mukaan.
-
-"""
 #luodaan x, y, ja z-arvoparit
 x_ax = twoDarray[0:40, 0]
 y_ax = twoDarray[0:40, 1]
@@ -74,39 +65,7 @@ keskipisteet = np.zeros(12, dtype=int).reshape((4, 3))
 for i in keskipisteet:
     for j in range(0,3):
         i[j] = np.random.randint(0, maxVals[j])
-
-
-"""
-Määritellään algoritmissa tarvittavia datarakenteita 
-centerPointCumulativeSum tulee olla keskipisteiden tapaan 4 riviä, 
-3 saraketta kokoinen numpy matriisi. 
-Tähän summataan aina voittavalle keskipisteelle yhden datapisteen x,y,z komponentit
-Counts tulee olla 1 riviä 4 saraketta kokoinen numpy matriisi
-ja tänne kasvatetaan aina voittavan keskipisteen datapisteiden lukumäärää yhdellä jokaisen voiton jälkeen.
-Distances on myös 1 riviä 4 saraketta kokoinen numpy matriisi 
-ja tähän talletetaan laskennan edetessä yksittäisen x,y,z pisteen etäisyys kaikkiin
-keskipisteet datarakenteessa oleviin 4 keskipisteeseen ja nuo 4 etäisyysarvoa talletetaan tähän muuttujaan.
-"""
-
-
 Distances = np.zeros(4, dtype=float)
-
-"""
-Opetellaan laskemaan ns euklidinen etäisyys kahden 3D-pisteen välillä. 
-Käytä esim np.linalg.norm funktiota. 
-Ja tietysti keksit jotkut 2 kpl yksinkertaisia x,y,z pisteitä 3D-avaruudesta, 
-joiden etäisyyden varmuudella tiedät tai osaat käsin laskea.
-
-Toteutetaan kahden for luupin rakenne algoritmin ytimeksi:
-Ulompi for luuppi ”kiertää” numberOfRows kertaa 
-eli käsittelee kaikki tiedostosta löytynee datapisteet. 
-Joka luupin kierroksella lasketaan sisäkkäisen luupin avulla tämän kyseisen datapisteen etäisyydet 
-ja selvitetään tämän jälkeen minkä keskipisteen etäisyys oli pienin. 
-Ja tuon pienimmän etäisyyden keskipisteen count arvoa kasvatetaan yhdellä 
-ja  centerPointCumulativeSum muuttujaan summataan x,y,z komponettien arvot.
-Sisäkkäinen luuppi laskee yhden datapisteen etäisyyden kaikkiin 4 keskipisteeseen 
-ja tallentaa tuloksen distances muuttujaan.
-"""
 dataFromLoop = np.reshape(np.zeros(1200), [100, 4, 3])
 
 for iterations in range(100):
@@ -127,7 +86,7 @@ for iterations in range(100):
                 smallestIndex = i
                 pienin = Distances[i]
         #Lisää kumulatiiviseen summaan pienimmän pisteen arvot, ja lisää Counts-taulukkoon yksi
-        centerPointCumulativeSum[smallestIndex] += keskipisteet[smallestIndex]
+        centerPointCumulativeSum[smallestIndex] += piste
         Counts[smallestIndex] += 1
     """
     Seuraavaksi centerPointCumulativeSum ja count muuttujan avulla pitää laskea uudet keskipisteet. 
@@ -150,13 +109,20 @@ for iterations in range(100):
                 keskipisteet[i][k] = np.random.randint(0, maxVals[j])
             #print("index {} has 0 counts. New point is {}".format(i, keskipisteet[i]))
         else:
-            keskipisteet[i] = centerPointCumulativeSum[i][:] / Counts[i]
+            keskipisteet[i] = centerPointCumulativeSum[i, :] / Counts[i]
     dataFromLoop[iterations] = keskipisteet
 
-    
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
+
             
-#ax.scatter(x_ax, y_ax, z_ax)
+ax.scatter(x_ax, y_ax, z_ax)
+ax.scatter(dataFromLoop[-1][0][0], dataFromLoop[-1][0][1], dataFromLoop[-1][0][2])
+ax.scatter(dataFromLoop[-1][1][0], dataFromLoop[-1][1][1], dataFromLoop[-1][1][2])
+ax.scatter(dataFromLoop[-1][2][0], dataFromLoop[-1][2][1], dataFromLoop[-1][2][2])
+ax.scatter(dataFromLoop[-1][3][0], dataFromLoop[-1][3][1], dataFromLoop[-1][3][2])
 #fig, axes = plt.subplots()
+"""
 p1_xpoints = dataFromLoop[:, 0, 0]
 p1_ypoints = dataFromLoop[:, 0, 1]
 p1_zpoints = dataFromLoop[:, 0, 2]
@@ -199,7 +165,7 @@ axis[1, 0].set_title("keskipiste 3")
 axis[1, 1].plot(p4_xpoints)
 axis[1, 1].plot(p4_ypoints)
 axis[1, 1].plot(p4_zpoints)
-axis[1, 1].set_title("keskipiste 4")
+axis[1, 1].set_title("keskipiste 4")"""
 
 plt.show()
   
