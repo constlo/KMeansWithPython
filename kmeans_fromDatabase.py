@@ -54,8 +54,38 @@ iterAmount = 100
 
 dataFromLoop = np.reshape(np.zeros(iterAmount * 12), [iterAmount, 4, 3])
 
-for iterations in range(iterAmount):
+#muuttuja johon tallennetaan viimeisin iteraatio, jossa oltiin:
+lastIteration = 0
 
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
+
+            
+ax.scatter(databaseX, databaseY, databaseZ, alpha=0.05, color='green', marker='^')
+ax.scatter(keskipisteet[0][0], keskipisteet[0][1], keskipisteet[0][2], marker='+', color='r')
+ax.scatter(keskipisteet[1][0], keskipisteet[1][1], keskipisteet[1][2], marker='+', color='r')
+ax.scatter(keskipisteet[2][0], keskipisteet[2][1], keskipisteet[2][2], marker='+', color='r')
+ax.scatter(keskipisteet[3][0], keskipisteet[3][1], keskipisteet[3][2], marker='+', color='r')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+plt.show()
+
+for iterations in range(iterAmount):
+    if iterations == 10:
+        fig = plt.figure()
+        ax = fig.add_subplot(projection='3d')
+
+                    
+        ax.scatter(databaseX, databaseY, databaseZ, alpha=0.05, color='green', marker='^')
+        ax.scatter(keskipisteet[0][0], keskipisteet[0][1], keskipisteet[0][2], marker='+', color='r')
+        ax.scatter(keskipisteet[1][0], keskipisteet[1][1], keskipisteet[1][2], marker='+', color='r')
+        ax.scatter(keskipisteet[2][0], keskipisteet[2][1], keskipisteet[2][2], marker='+', color='r')
+        ax.scatter(keskipisteet[3][0], keskipisteet[3][1], keskipisteet[3][2], marker='+', color='r')
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+        plt.show()
     #print("Uudet keskipisteet: {}".format(keskipisteet))
     centerPointCumulativeSum = np.zeros(12, dtype=int).reshape((4, 3))
     Counts = np.zeros(4, dtype=int)
@@ -84,6 +114,11 @@ for iterations in range(iterAmount):
         else:
             keskipisteet[i, :] = centerPointCumulativeSum[i][:] / Counts[i]
     dataFromLoop[iterations] = keskipisteet
+    lastIteration = iterations
+    if(iterations > 10):
+        if np.array_equal(keskipisteet, dataFromLoop[iterations - 1]):
+            print("No change from last iteration. Terminating loop at index {}".format(iterations))
+            break
 print(Counts)
     
     
@@ -91,14 +126,14 @@ print(Counts)
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 
-pisteet = pd.DataFrame.from_dict(dataFromLoop[-1])
+pisteet = pd.DataFrame.from_dict(dataFromLoop[lastIteration])
 
 
-ax.scatter(databaseX, databaseY, databaseZ, alpha=0.05)
-ax.scatter(dataFromLoop[-1][0][0], dataFromLoop[-1][0][1], dataFromLoop[-1][0][2], color='r', marker='+')
-ax.scatter(dataFromLoop[-1][1][0], dataFromLoop[-1][1][1], dataFromLoop[-1][1][2], color='r', marker='+')
-ax.scatter(dataFromLoop[-1][2][0], dataFromLoop[-1][2][1], dataFromLoop[-1][2][2], color='r', marker='+')
-ax.scatter(dataFromLoop[-1][3][0], dataFromLoop[-1][3][1], dataFromLoop[-1][3][2], color='r', marker='+')
+ax.scatter(databaseX, databaseY, databaseZ, alpha=0.05, color='green', marker='^')
+ax.scatter(dataFromLoop[lastIteration][0][0], dataFromLoop[lastIteration][0][1], dataFromLoop[lastIteration][0][2], color='r', marker='+')
+ax.scatter(dataFromLoop[lastIteration][1][0], dataFromLoop[lastIteration][1][1], dataFromLoop[lastIteration][1][2], color='r', marker='+')
+ax.scatter(dataFromLoop[lastIteration][2][0], dataFromLoop[lastIteration][2][1], dataFromLoop[lastIteration][2][2], color='r', marker='+')
+ax.scatter(dataFromLoop[lastIteration][3][0], dataFromLoop[lastIteration][3][1], dataFromLoop[lastIteration][3][2], color='r', marker='+')
 
 ax.set_xlabel('X')
 ax.set_ylabel('Y')

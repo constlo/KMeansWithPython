@@ -8,7 +8,7 @@ import pandas as pd
 
 #lue putty.log tiedosto ja muokkaa se numpy arrayksi
 #Käytetään squeeze-metodia, jolla isnompiulotteinen array muokataan peinemmäksi
-mydf = np.loadtxt('putty.log')
+mydf = np.loadtxt('putty.log', dtype= int)
 print(mydf.size)
 numberOfRows = 0
 arraySize = mydf.size
@@ -41,8 +41,30 @@ for i in keskipisteet:
 Distances = np.zeros(4, dtype=float)
 dataFromLoop = np.reshape(np.zeros(1200), [100, 4, 3])
 
-for iterations in range(100):
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
 
+            
+ax.scatter(x_ax, y_ax, z_ax, alpha=0.1)
+ax.scatter(keskipisteet[0][0], keskipisteet[0][1], keskipisteet[0][2], marker='+', color='r')
+ax.scatter(keskipisteet[1][0], keskipisteet[1][1], keskipisteet[1][2], marker='+', color='r')
+ax.scatter(keskipisteet[2][0], keskipisteet[2][1], keskipisteet[2][2], marker='+', color='r')
+ax.scatter(keskipisteet[3][0], keskipisteet[3][1], keskipisteet[3][2], marker='+', color='r')
+plt.show()
+
+
+for iterations in range(100):
+    if iterations == 5:
+        fig = plt.figure()
+        ax = fig.add_subplot(projection='3d')
+
+                    
+        ax.scatter(x_ax, y_ax, z_ax, alpha=0.1)
+        ax.scatter(keskipisteet[0][0], keskipisteet[0][1], keskipisteet[0][2], marker='+', color='r')
+        ax.scatter(keskipisteet[1][0], keskipisteet[1][1], keskipisteet[1][2], marker='+', color='r')
+        ax.scatter(keskipisteet[2][0], keskipisteet[2][1], keskipisteet[2][2], marker='+', color='r')
+        ax.scatter(keskipisteet[3][0], keskipisteet[3][1], keskipisteet[3][2], marker='+', color='r')
+        plt.show()
     #print("Uudet keskipisteet: {}".format(keskipisteet))
     centerPointCumulativeSum = np.zeros(12, dtype=int).reshape((4, 3))
     Counts = np.zeros(4, dtype=int)
@@ -88,56 +110,10 @@ fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 
             
-ax.scatter(x_ax, y_ax, z_ax)
-ax.scatter(dataFromLoop[-1][0][0], dataFromLoop[-1][0][1], dataFromLoop[-1][0][2])
-ax.scatter(dataFromLoop[-1][1][0], dataFromLoop[-1][1][1], dataFromLoop[-1][1][2])
-ax.scatter(dataFromLoop[-1][2][0], dataFromLoop[-1][2][1], dataFromLoop[-1][2][2])
-ax.scatter(dataFromLoop[-1][3][0], dataFromLoop[-1][3][1], dataFromLoop[-1][3][2])
-#fig, axes = plt.subplots()
-"""
-p1_xpoints = dataFromLoop[:, 0, 0]
-p1_ypoints = dataFromLoop[:, 0, 1]
-p1_zpoints = dataFromLoop[:, 0, 2]
-
-p2_xpoints = dataFromLoop[:, 1, 0]
-p2_ypoints = dataFromLoop[:, 1, 1]
-p2_zpoints = dataFromLoop[:, 1, 2]
-
-p3_xpoints = dataFromLoop[:, 2, 0]
-p3_ypoints = dataFromLoop[:, 2, 1]
-p3_zpoints = dataFromLoop[:, 2, 2]
-
-p4_xpoints = dataFromLoop[:, 3, 0]
-p4_ypoints = dataFromLoop[:, 3, 1]
-p4_zpoints = dataFromLoop[:, 3, 2]
-
-
-
-figure, axis = plt.subplots(2, 2)
-  
-# For Sine Function
-axis[0, 0].plot(p1_xpoints)
-axis[0, 0].plot(p1_ypoints)
-axis[0, 0].plot(p1_zpoints)
-axis[0, 0].set_title("Keskipiste 1")
-  
-# For Cosine Function
-axis[0, 1].plot(p2_xpoints)
-axis[0, 1].plot(p2_ypoints)
-axis[0, 1].plot(p2_zpoints)
-axis[0, 1].set_title("Keskipiste 2")
-  
-# For Tangent Function
-axis[1, 0].plot(p3_xpoints)
-axis[1, 0].plot(p3_ypoints)
-axis[1, 0].plot(p3_zpoints)
-axis[1, 0].set_title("keskipiste 3")
-  
-# For Tanh Function
-axis[1, 1].plot(p4_xpoints)
-axis[1, 1].plot(p4_ypoints)
-axis[1, 1].plot(p4_zpoints)
-axis[1, 1].set_title("keskipiste 4")"""
-
+ax.scatter(x_ax, y_ax, z_ax, alpha=0.1)
+ax.scatter(dataFromLoop[-1][0][0], dataFromLoop[-1][0][1], dataFromLoop[-1][0][2], marker='+', color='r')
+ax.scatter(dataFromLoop[-1][1][0], dataFromLoop[-1][1][1], dataFromLoop[-1][1][2], marker='+', color='r')
+ax.scatter(dataFromLoop[-1][2][0], dataFromLoop[-1][2][1], dataFromLoop[-1][2][2], marker='+', color='r')
+ax.scatter(dataFromLoop[-1][3][0], dataFromLoop[-1][3][1], dataFromLoop[-1][3][2], marker='+', color='r')
 plt.show()
   
