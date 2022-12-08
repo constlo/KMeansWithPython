@@ -18,6 +18,8 @@ mycursor.execute("SELECT * FROM rawdata WHERE groupId=66")
 
 myresult = pd.DataFrame(mycursor.fetchall(), columns=['id', 'dateTime', 'groupId', 'a', 'b', 'x', 'y', 'z', 'c', 'flag', 'status'])
 
+print(np.min(myresult['x'].to_numpy(dtype=int)))
+
 #Otetaan talteen x-y-ja z-arvot. Nämä sijoitetaan data2DArray-tietorakenteeseen.
 databaseX = myresult['x'].to_numpy(dtype=int)
 databaseY = myresult['y'].to_numpy(dtype=int)
@@ -26,13 +28,13 @@ databaseZ = myresult['z'].to_numpy(dtype=int)
 #Emme voi tietää, ovatko kaikki akselit yhtä pitkiä. Siispä selvitetään suurin pituus np.max-funktiolla.
 resultSize = np.max([databaseX.size, databaseY.size, databaseZ.size])
 
-data2DArray = np.zeros(resultSize * 3).reshape(resultSize, 3)
+data2DArray = np.zeros(resultSize * 3, dtype=int).reshape(resultSize, 3)
 
 #sijoita tietorakenteeseen
 data2DArray[:, 0] = databaseX
 data2DArray[:, 1] = databaseY
 data2DArray[:, 2] = databaseZ
-print(data2DArray)
+print(data2DArray[:, 0])
 pd.DataFrame.to_csv(myresult, 'data.csv')
 
 #Varastoi maksimiarvot
@@ -70,21 +72,8 @@ for iterations in range(iterAmount):
                 smallestIndex = i
                 pienin = Distances[i]
         #Lisää kumulatiiviseen summaan pienimmän pisteen arvot, ja lisää Counts-taulukkoon yksi
-        centerPointCumulativeSum[smallestIndex] += keskipisteet[smallestIndex]
+        centerPointCumulativeSum[smallestIndex] += piste
         Counts[smallestIndex] += 1
-    """
-    Seuraavaksi centerPointCumulativeSum ja count muuttujan avulla pitää laskea uudet keskipisteet. 
-    Huomaa jos joku keskipiste ei saanut yhtään ”voittoa” edellisessä vaiheessa, niin tälle keskipisteelle arvotaan uusi lähtöarvo.
-
-    Toteuta algoritmiin vielä yksi ulompi luuppirakenne, joka tekee tämän kalvon vaiheet 1 ja 2 esim 10 kertaa.
-
-    Toteuta edellisen kohdan luuppirakenteen sisälle jonkinlainen datarakenne, johon keräät keskipisteiden arvot jokaiselta iteraatiokerralta.
-
-    Visualisoi algoritmin suppeneminen kohti oikeita keskipisteitä plottaamalla tai tulostamalla edellisessä vaiheessa keräämäsi keskipisteiden arvot.
-    Testaa algoritmia. Algoritmin pitäisi aina päätyä tilanteeseen, missä kullekin keskipisteelle tulee 10 data pistettä. Kun algoritmi toimii varmasti, 
-    vie syntynyt koodi githubiin ja viimeistele readme dokumentin K-means algoritmikuvaus
-
-    """
     #Valitaan uudelleen ne pisteet, joihin ei tullut voittoa, ja arvotaan niihin uudet arvot
     for i in range(4):
         if(Counts[i] == 0):
@@ -99,56 +88,22 @@ print(Counts)
     
     
             
-#ax.scatter(x_ax, y_ax, z_ax)
-#fig, axes = plt.subplots()
-p1_xpoints = dataFromLoop[:, 0, 0]
-p1_ypoints = dataFromLoop[:, 0, 1]
-p1_zpoints = dataFromLoop[:, 0, 2]
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
 
-p2_xpoints = dataFromLoop[:, 1, 0]
-p2_ypoints = dataFromLoop[:, 1, 1]
-p2_zpoints = dataFromLoop[:, 1, 2]
-
-p3_xpoints = dataFromLoop[:, 2, 0]
-p3_ypoints = dataFromLoop[:, 2, 1]
-p3_zpoints = dataFromLoop[:, 2, 2]
-
-p4_xpoints = dataFromLoop[:, 3, 0]
-p4_ypoints = dataFromLoop[:, 3, 1]
-p4_zpoints = dataFromLoop[:, 3, 2]
+pisteet = pd.DataFrame.from_dict(dataFromLoop[-1])
 
 
-figure, axis = plt.subplots(2, 2)
-  
-# For Sine Function
-axis[0, 0].plot(p1_xpoints)
-axis[0, 0].plot(p1_ypoints)
-axis[0, 0].plot(p1_zpoints)
-axis[0, 0].set_title("Keskipiste 1")
-  
-# For Cosine Function
-axis[0, 1].plot(p2_xpoints)
-axis[0, 1].plot(p2_ypoints)
-axis[0, 1].plot(p2_zpoints)
-axis[0, 1].set_title("Keskipiste 2")
-  
-# For Tangent Function
-axis[1, 0].plot(p3_xpoints)
-axis[1, 0].plot(p3_ypoints)
-axis[1, 0].plot(p3_zpoints)
-axis[1, 0].set_title("keskipiste 3")
-  
-# For Tanh Function
-axis[1, 1].plot(p4_xpoints)
-axis[1, 1].plot(p4_ypoints)
-axis[1, 1].plot(p4_zpoints)
-axis[1, 1].set_title("keskipiste 4")
+ax.scatter(databaseX, databaseY, databaseZ, alpha=0.05)
+ax.scatter(dataFromLoop[-1][0][0], dataFromLoop[-1][0][1], dataFromLoop[-1][0][2], color='r', marker='+')
+ax.scatter(dataFromLoop[-1][1][0], dataFromLoop[-1][1][1], dataFromLoop[-1][1][2], color='r', marker='+')
+ax.scatter(dataFromLoop[-1][2][0], dataFromLoop[-1][2][1], dataFromLoop[-1][2][2], color='r', marker='+')
+ax.scatter(dataFromLoop[-1][3][0], dataFromLoop[-1][3][1], dataFromLoop[-1][3][2], color='r', marker='+')
 
-pisteet =pd.DataFrame.from_dict(dataFromLoop[-1]) 
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
 
 pd.DataFrame.to_csv(pisteet, 'finalpoints.csv')
 
 plt.show()
-
-
-#Looppi pysähtyy kun on saavutettu vain 1 count. miksi?
