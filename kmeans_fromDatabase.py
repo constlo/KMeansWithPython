@@ -18,7 +18,7 @@ mycursor.execute("SELECT * FROM rawdata WHERE groupId=66")
 
 myresult = pd.DataFrame(mycursor.fetchall(), columns=['id', 'dateTime', 'groupId', 'a', 'b', 'x', 'y', 'z', 'c', 'flag', 'status'])
 
-print(np.min(myresult['x'].to_numpy(dtype=int)))
+print(myresult[450:-1])
 
 #Otetaan talteen x-y-ja z-arvot. Nämä sijoitetaan data2DArray-tietorakenteeseen.
 databaseX = myresult['x'].to_numpy(dtype=int)
@@ -34,8 +34,6 @@ data2DArray = np.zeros(resultSize * 3, dtype=int).reshape(resultSize, 3)
 data2DArray[:, 0] = databaseX
 data2DArray[:, 1] = databaseY
 data2DArray[:, 2] = databaseZ
-print(data2DArray[:, 0])
-pd.DataFrame.to_csv(myresult, 'data.csv')
 
 #Varastoi maksimiarvot
 maxVals = [databaseX.max(), databaseY.max(), databaseZ.max()]
@@ -52,7 +50,7 @@ Distances = np.zeros(4, dtype=float)
 
 iterAmount = 100
 
-dataFromLoop = np.reshape(np.zeros(iterAmount * 12), [iterAmount, 4, 3])
+dataFromLoop = np.reshape(np.zeros(iterAmount * 12, dtype=int), [iterAmount, 4, 3])
 
 #muuttuja johon tallennetaan viimeisin iteraatio, jossa oltiin:
 lastIteration = 0
@@ -139,6 +137,21 @@ ax.set_xlabel('X')
 ax.set_ylabel('Y')
 ax.set_zlabel('Z')
 
-pd.DataFrame.to_csv(pisteet, 'finalpoints.csv')
+pd.DataFrame.to_csv(pisteet, 'trainedPoints.csv', header='', index='')
+
+#Kirjoitetaan saatu data vielä .h-tiedostoksi arduinoa varten.
+with open("./kmeans/pisteet.h", 'w') as tied:
+    tied.write("#include <stdint.h>\n")
+    tied.write("uint16_t pisteet[4][3] = ")
+    tied.write("{\n")
+    for i in range(4):
+        tied.write("{")
+        tied.write("{}, {}, {}".format(dataFromLoop[lastIteration][i][0], dataFromLoop[lastIteration][i][1], dataFromLoop[lastIteration][i][2]))
+        if i != 3:
+            tied.write("},\n")
+        else:
+            tied.write("}\n")
+    tied.write("};")  
+
 
 plt.show()
