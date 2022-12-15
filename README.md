@@ -6,6 +6,10 @@ TVT21SPL, Oulun Ammattikorkeakoulu
 This is a school project made at Oulu University of Applied Sciences.
 In this project, we developed our own k-means algorithm using sensor data from an embedded device.
 
+Here is the architecture diagram of our project.
+
+<a href="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/systemflowchart.drawio.png?raw=true"> <img alt="system flowchart" src="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/systemflowchart.drawio.png?raw=true" >  </a>
+
 This first image displays the algorithm with arbitary data.
 
 <a href="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/preprocessedData.png"><img alt="Implementation using provided data" src="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/preprocessedData.png"> </a>
@@ -23,8 +27,6 @@ The k-means algorithm we implemented works in the following way:
 Our algorith was then ported to arduino for prediction purposes. Measurements for the arduino yielded the following confusion matrix:
 
 <a href="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/Confusion_matrix.png"><img alt="confusion matrix" src="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/Confusion_matrix.png"> </a>
-
-<a href="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/systemflowchart.drawio.png?raw=true"> <img alt="system flowchart" src="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/systemflowchart.drawio.png?raw=true" >  </a>
 
 <a title="alaa kaddour, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Sql_data_base_with_logo.png"><img width="512" alt="Sql data base with logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Sql_data_base_with_logo.png/512px-Sql_data_base_with_logo.png">
 </a><sub> (1)</sub>
