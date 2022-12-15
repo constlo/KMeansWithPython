@@ -2,7 +2,16 @@
 ## Konsta Lohilahti
 TVT21SPL, Oulun Ammattikorkeakoulu
 
-Tietoliikenteen sovellusprojektin 2022 repositorio.
+###About
+
+This is a school project made at Oulu University of Applied Sciences.
+In this project, we developed our own k-meeans algorithm using sensor data from an embedded device.
+
+This first image displays the algorithm with arbitary data.
+
+<a href="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/preprocessedData.png"><img alt="Implementation using provided data" src="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/preprocessedData.png"> </a>
+
+
 
 <a href="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/systemflowchart.drawio.png?raw=true"> <img alt="system flowchart" src="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/systemflowchart.drawio.png?raw=true" >  </a>
 
