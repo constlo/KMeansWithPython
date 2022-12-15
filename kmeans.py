@@ -8,7 +8,7 @@ import pandas as pd
 
 #lue putty.log tiedosto ja muokkaa se numpy arrayksi
 #Käytetään squeeze-metodia, jolla isnompiulotteinen array muokataan peinemmäksi
-mydf = np.loadtxt('putty.log', dtype= int)
+mydf = np.loadtxt('conf_mat_from_arduino.csv', delimiter=',')
 print(mydf.size)
 numberOfRows = 0
 arraySize = mydf.size
@@ -21,13 +21,14 @@ if(threeDivisible != 0):
 handledArray = np.copy(mydf[0:arraySize])
 lastIndex = int(arraySize / 3)
 #Muokataan vielä jonosta 2d-array
-twoDarray = handledArray.reshape(int(handledArray.size / 3), 3)
+twoDarray = handledArray.reshape(int(handledArray.size / 5), 5)
+print(twoDarray.size)
 
 #Viikko 5, vaihe 2: Keskipisteiden arpominen
 #luodaan x, y, ja z-arvoparit
-x_ax = twoDarray[0:40, 0]
-y_ax = twoDarray[0:40, 1]
-z_ax = twoDarray[0:40, 2]
+x_ax = twoDarray[0:4000, 0]
+y_ax = twoDarray[0:4000, 1]
+z_ax = twoDarray[0:4000, 2]
 
 #luodaan myös lista, jossa säilytetään akselien maksimiarvot
 maxVals = [x_ax.max(), y_ax.max(), z_ax.max()]
@@ -69,6 +70,7 @@ for iterations in range(100):
     centerPointCumulativeSum = np.zeros(12, dtype=int).reshape((4, 3))
     Counts = np.zeros(4, dtype=int)
     smallestIndex = 0
+    #for i in range
     for piste in twoDarray:
         Distances = np.zeros(4, dtype=float)
         #Valitaan sellainen etäisyys, joka on suurempi kuin kaikki mahdolliset etäisyydet. 

@@ -39,7 +39,9 @@ data2DArray[:, 2] = databaseZ
 maxVals = [databaseX.max(), databaseY.max(), databaseZ.max()]
 
 #Tämän jälkeen luodaan (4x3) matriisi, jossa säilytetään 4 satunnaista pistettä.
+#jos meillä on kuitenkin jo olemassa olevat pisteet, käytetään niitä.
 keskipisteet = np.zeros(12, dtype=int).reshape((4, 3))
+
 #sijoita satunnaisarvot matriisiin
 for i in keskipisteet:
     for j in range(0,3):
