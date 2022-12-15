@@ -11,6 +11,10 @@ This first image displays the algorithm with arbitary data.
 
 <a href="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/preprocessedData.png"><img alt="Implementation using provided data" src="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/preprocessedData.png"> </a>
 
+The second image displays the algorithm working with our own data.
+
+<a href="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/sensorData.png"><img alt="Implementation using own data" src="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/sensorData.png"> </a>
+
 
 
 <a href="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/systemflowchart.drawio.png?raw=true"> <img alt="system flowchart" src="https://github.com/constlo/TL_SvProjekti2022_loko/blob/main/systemflowchart.drawio.png?raw=true" >  </a>
