@@ -8,7 +8,7 @@ import pandas as pd
 
 #lue putty.log tiedosto ja muokkaa se numpy arrayksi
 #Käytetään squeeze-metodia, jolla isnompiulotteinen array muokataan peinemmäksi
-mydf = np.loadtxt('conf_mat_from_arduino.csv', delimiter=',')
+mydf = np.loadtxt('putty.log', delimiter=',', dtype=int)
 print(mydf.size)
 numberOfRows = 0
 arraySize = mydf.size
@@ -21,22 +21,22 @@ if(threeDivisible != 0):
 handledArray = np.copy(mydf[0:arraySize])
 lastIndex = int(arraySize / 3)
 #Muokataan vielä jonosta 2d-array
-twoDarray = handledArray.reshape(int(handledArray.size / 5), 5)
-print(twoDarray.size)
+reshaped_array = handledArray.reshape(int(handledArray.size / 3), 3)
+print(reshaped_array.size)
 
 #Viikko 5, vaihe 2: Keskipisteiden arpominen
 #luodaan x, y, ja z-arvoparit
-x_ax = twoDarray[0:4000, 0]
-y_ax = twoDarray[0:4000, 1]
-z_ax = twoDarray[0:4000, 2]
+x_ax = reshaped_array[0:4000, 0]
+y_ax = reshaped_array[0:4000, 1]
+z_ax = reshaped_array[0:4000, 2]
 
 #luodaan myös lista, jossa säilytetään akselien maksimiarvot
 maxVals = [x_ax.max(), y_ax.max(), z_ax.max()]
 
 #Tämän jälkeen luodaan (4x3) matriisi, jossa säilytetään 4 satunnaista pistettä.
-keskipisteet = np.zeros(12, dtype=int).reshape((4, 3))
+center_points = np.zeros(12, dtype=int).reshape((4, 3))
 #sijoita satunnaisarvot matriisiin
-for i in keskipisteet:
+for i in center_points:
     for j in range(0,3):
         i[j] = np.random.randint(0, maxVals[j])
 Distances = np.zeros(4, dtype=float)
@@ -47,10 +47,10 @@ ax = fig.add_subplot(projection='3d')
 
             
 ax.scatter(x_ax, y_ax, z_ax, alpha=0.1)
-ax.scatter(keskipisteet[0][0], keskipisteet[0][1], keskipisteet[0][2], marker='+', color='r')
-ax.scatter(keskipisteet[1][0], keskipisteet[1][1], keskipisteet[1][2], marker='+', color='r')
-ax.scatter(keskipisteet[2][0], keskipisteet[2][1], keskipisteet[2][2], marker='+', color='r')
-ax.scatter(keskipisteet[3][0], keskipisteet[3][1], keskipisteet[3][2], marker='+', color='r')
+ax.scatter(center_points[0][0], center_points[0][1], center_points[0][2], marker='+', color='r')
+ax.scatter(center_points[1][0], center_points[1][1], center_points[1][2], marker='+', color='r')
+ax.scatter(center_points[2][0], center_points[2][1], center_points[2][2], marker='+', color='r')
+ax.scatter(center_points[3][0], center_points[3][1], center_points[3][2], marker='+', color='r')
 plt.show()
 
 
@@ -61,29 +61,30 @@ for iterations in range(100):
 
                     
         ax.scatter(x_ax, y_ax, z_ax, alpha=0.1)
-        ax.scatter(keskipisteet[0][0], keskipisteet[0][1], keskipisteet[0][2], marker='+', color='r')
-        ax.scatter(keskipisteet[1][0], keskipisteet[1][1], keskipisteet[1][2], marker='+', color='r')
-        ax.scatter(keskipisteet[2][0], keskipisteet[2][1], keskipisteet[2][2], marker='+', color='r')
-        ax.scatter(keskipisteet[3][0], keskipisteet[3][1], keskipisteet[3][2], marker='+', color='r')
+        ax.scatter(center_points[0][0], center_points[0][1], center_points[0][2], marker='+', color='r')
+        ax.scatter(center_points[1][0], center_points[1][1], center_points[1][2], marker='+', color='r')
+        ax.scatter(center_points[2][0], center_points[2][1], center_points[2][2], marker='+', color='r')
+        ax.scatter(center_points[3][0], center_points[3][1], center_points[3][2], marker='+', color='r')
         plt.show()
     #print("Uudet keskipisteet: {}".format(keskipisteet))
     centerPointCumulativeSum = np.zeros(12, dtype=int).reshape((4, 3))
     Counts = np.zeros(4, dtype=int)
     smallestIndex = 0
     #for i in range
-    for piste in twoDarray:
+    for iteration_point in reshaped_array:
         Distances = np.zeros(4, dtype=float)
-        #Valitaan sellainen etäisyys, joka on suurempi kuin kaikki mahdolliset etäisyydet. 
-        pienin = 1000.0
+        #Valitaan sellainen etäisyys, joka on varmasti suurempi kuin kaikki mahdolliset etäisyydet. 
+        current_smallest = 1000.0
         for i in range(4):
             #Laske etäisyys
-            Distances[i] = np.linalg.norm(keskipisteet[i] - piste)
-            #Jos löytyy pienempi etäisyys kuin pienin etäisyys, sijoita muuttujaan ja tallenna millä indeksillä löytyi
-            if (Distances[i] < pienin):
+            Distances[i] = np.linalg.norm(center_points[i] - iteration_point)
+            #Jos löytyy pienempi etäisyys kuin pienin etäisyys, 
+            #sijoita current_smallest-muuttujaan ja tallenna millä indeksillä se löytyi
+            if (Distances[i] < current_smallest):
                 smallestIndex = i
-                pienin = Distances[i]
+                current_smallest = Distances[i]
         #Lisää kumulatiiviseen summaan pienimmän pisteen arvot, ja lisää Counts-taulukkoon yksi
-        centerPointCumulativeSum[smallestIndex] += piste
+        centerPointCumulativeSum[smallestIndex] += iteration_point
         Counts[smallestIndex] += 1
     """
     Seuraavaksi centerPointCumulativeSum ja count muuttujan avulla pitää laskea uudet keskipisteet. 
@@ -102,11 +103,11 @@ for iterations in range(100):
     for i in range(4):
         if(Counts[i] == 0):
             for k in range(0, 3):
-                keskipisteet[i][k] = np.random.randint(0, maxVals[j])
+                center_points[i][k] = np.random.randint(0, maxVals[j])
                 #print("index {} has 0 counts. New point is {}".format(i, keskipisteet[i]))
         else:
-            keskipisteet[i] = centerPointCumulativeSum[i, :] / Counts[i]
-    dataFromLoop[iterations] = keskipisteet
+            center_points[i] = centerPointCumulativeSum[i, :] / Counts[i]
+    dataFromLoop[iterations] = center_points
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
